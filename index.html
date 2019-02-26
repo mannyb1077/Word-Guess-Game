@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+       
+        <title>Word Guess Game</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Bootstrap File -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery.js"></script>
+
+    </head>
+
+    <body>
+
+        <!-- Overall Bootstrap Grid -->
+        <div class="container">
+
+        <!-- Jumbotron with Title -->
+        <div class="jumbotron">
+            <h1 class="text-center">
+            <img src="assets/images/movie1.jpeg" alt="Placeholder" class="img img-thumbnail" style="position: relative; top:0px; left: -250px; height: 100px">
+            <strong>"80's Movies"</strong>
+            <img src="assets/images/movie2.jpeg" alt="Placeholder" class="img img-thumbnail" style="position: relative; top:0px; left: 250px; height: 100px">
+            </h1>
+            <hr>
+            <h4 class="text-center">
+                <strong>Press any key to get started!</strong>
+            </h4>
+           
+
+        </div>
+
+        
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+            <!-- Random Movie -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2">
+                    <h3 class="card-header">Random Movie</h3>
+                    <div class="card-body text-center">
+                        <h3 id="movie"></h3>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            <!-- Letters Guessed Correctly -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2">
+                    <h3 class="card-header">Correct Guesses</h3>
+                    <div class="card-body text-center">
+                        <h6 id="correcLetters"></h6>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            <!-- Letters Guessed Incorrectly -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2">
+                    <h3 class="card-header">Incorrect Guesses</h3>
+                    <div class="card-body text-center">
+                        <h6 id="incorrecLetters"></h6>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            <!-- All Letters Guessed -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2">
+                    <h3 class="card-header">All Letters Guessed</h3>
+                    <div class="card-body text-center">
+                        <h6 id="guessedLetters"></h6>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+
+      
+            <!-- Wins -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-2">
+                    <h3 class="card-header">Wins</h3>
+                    <div class="card-body text-center">
+                        <h6 id="numberOfWins"></h6>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Guesses Remaining -->
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-2">
+                        <h3 class="card-header">Guesses Remaining</h3>
+                        <div class="card-body text-center">
+                            <h6 id="guessesRemaining"></h6>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+        
+
+            <div class="text-center">
+                <button class="btn btn-dark btn-lg back-button">
+                <span class="fa fa-comment"></span> Next Movie!</button>
+            </div>
+        </div> 
+
+            <!-- Movie Image -->
+            <div class="col-lg-6">
+
+                <!-- Random Movie Image -->
+                <img id="image" src="" alt="Placeholder" class="img img-thumbnail" style="position:absolute; top:0px; left: 0px; z-index: -20; height: 400px">
+        
+            
+            </div>
+        </div>
+        </div>
+
+    <script>
+
+        var wins = 0;
+        var guessesRemaining = 11;
+        var lettersGuessed = [];
+        var guessedCorrectly = [];
+        var guessedIncorrectly = [];
+        var movies = ["terminator","backtothefuture", "et", "predator","thekaratekid","goonies","ghostbusters","topgun", "diehard", "gremlins", "fasttimes", "starwars", "beetlejuice","aliens","scarface"];
+
+        var coverArt = ["terminator.jpeg", "bttf.jpeg","et.jpeg","predator.jpeg","karatekid.jpeg","goonies.jpeg","ghost.jpeg","topgun.jpeg","diehard.jpeg","gremlins.jpeg","fasttimes.jpeg","starwars.jpeg","beetlejuice.jpeg","aliens.jpeg","scarface.jpeg"];
+
+        var audio =["terminator.mp3", "bttf.mp3","et.mp3","predator.mp3","karatekid.mp3","goonies.mp3","ghost.mp3","topgun.mp3","diehard.mp3","gremlins.mp3","fasttimes.mp3","starwars.mp3","beetlejuice.mp3","aliens.mp3","scarface.mp3"]
+
+        var randomMovie = movies[randomNum];
+        var randomNum = [];
+        var randomMovie =[];
+        var randomAudio = [];
+
+        function emptyArrays()
+        {
+            lettersGuessed = [];
+            guessedCorrectly = [];
+            guessedIncorrectly = [];
+        }
+
+
+        function loadNewMovie()
+        {
+            randomNum = Math.floor(Math.random() * movies.length);
+            randomMovie = movies[randomNum];
+            // console.log(randomMovie);
+            underscores = [];
+            
+            randomCover = coverArt[randomNum];
+            randomAudio = audio[randomNum];
+            loadCoverArt();
+            loadaudioFile();
+            emptyArrays();
+
+        }
+
+
+        function loadCoverArt()
+        {
+            // document.getElementById("coverArt");
+            var newElement = document.createElement("img");
+            newElement.setAttribute("src", "assets/images/"+ randomCover);
+            document.getElementById("image").appendChild(newElement)
+            // console.log(newElement);
+            // console.log(randomCover);
+
+            document.getElementById("image").src ="assets/images/" + randomCover;
+            
+        }
+
+        function loadaudioFile()
+        {
+            //Gets Link for Theme Song
+            var audioElement = document.createElement("audio");
+            audioElement.setAttribute("src", "assets/audio/" + randomAudio);
+            
+            audioElement.play();
+        }
+ 
+                
+
+        document.onkeyup = function ()
+        {
+            //loads new movie at beginning of game and sets guesses remaining to 10
+            if (guessesRemaining ==11)
+            {
+                loadNewMovie();
+            }
+
+            var letterTyped = String.fromCharCode(event.keyCode).
+            toLowerCase();
+        
+            console.log(letterTyped);
+
+            
+            //pushing to lettersGuessed array
+            lettersGuessed.push(letterTyped);
+
+ 
+            
+            //if letter Guessed is part of Current Movie
+            if(randomMovie.indexOf(letterTyped) > -1)
+            {
+                guessedCorrectly.push(letterTyped);  
+                console.log(guessedCorrectly);
+                
+                //check if guessCorrectly  = randomMovie
+                if (guessedCorrectly.length == randomMovie.length)
+                {
+                alert("You Won");
+                loadNewMovie();
+                wins ++;
+
+            }
+
+            }
+            else 
+            {
+                guessesRemaining--
+                guessedIncorrectly.push(letterTyped);
+                console.log(guessesRemaining)
+            }
+
+
+            if (guessesRemaining <0)
+            {
+                alert("YOU LOSE!  The Movie was " + randomMovie);
+                guessesRemaining =9;
+                // emptyArrays();
+                loadNewMovie();
+
+            }
+
+            for (var i = 0; i < randomMovie.length; i++)
+            {
+                underscores[i] = " _ ";
+                
+                var remainingLetters = randomMovie.length;
+                
+                // if (guessedCorrectly < randomMovie) 
+                // {
+                    
+                // }
+                             
+            }
+
+
+         
+            
+
+
+            // // JavaScript function that wraps everything
+            $(document).ready(function() 
+            {
+                
+                
+                $("#movie").text(underscores);
+                $("#correcLetters").text(guessedCorrectly);
+                $("#incorrecLetters").text(guessedIncorrectly);
+                $("#guessedLetters").text(lettersGuessed);
+                $("#numberOfWins").text(wins);
+                $("#guessesRemaining").text(guessesRemaining);
+
+                $(".back-button").on("click", function() {
+                loadNewMovie();
+                
+                });
+
+            
+            });
+
+
+
+        }
+    </script>
+
+</body>
+
+</html>
