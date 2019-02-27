@@ -120,7 +120,7 @@
 
             <div class="text-center">
                 <button class="btn btn-dark btn-lg back-button">
-                <span class="fa fa-comment"></span> Next Movie!</button>
+                <span class=></span> </button>
             </div>
         </div> 
 
@@ -152,12 +152,16 @@
         var randomNum = [];
         var randomMovie =[];
         var randomAudio = [];
+        var remainingLetters = [];
+        var underscores = [];
+
 
         function emptyArrays()
         {
             lettersGuessed = [];
             guessedCorrectly = [];
             guessedIncorrectly = [];
+            $("#movie, #correctLetters, #incorrectLetters, #guessedLetters, #numberOfWins, #guessesRemaining").empty();
         }
 
 
@@ -173,7 +177,22 @@
             loadCoverArt();
             loadaudioFile();
             emptyArrays();
+            compareWords();
 
+            for (var i = 0; i < randomMovie.length; i++)
+            {
+                underscores[i] = " _ ";
+                
+                remainingLetters = randomMovie.length;  
+
+
+            if (remainingLetters === underscores[i]) 
+                {
+                    console.log(underscores)
+                }  
+
+            }
+  
         }
 
 
@@ -192,12 +211,26 @@
 
         function loadaudioFile()
         {
-            //Gets Link for Theme Song
+            
             var audioElement = document.createElement("audio");
             audioElement.setAttribute("src", "assets/audio/" + randomAudio);
+            console.log (randomAudio)
             
             audioElement.play();
         }
+
+        function compareWords ()
+        {
+            var str = randomMovie;
+            var res = str.split("");
+            
+            console.log("This is res " + res);
+            // console.log("this is str " + str);
+
+        }
+
+        
+
  
                 
 
@@ -212,7 +245,7 @@
             var letterTyped = String.fromCharCode(event.keyCode).
             toLowerCase();
         
-            console.log(letterTyped);
+            // console.log(letterTyped);
 
             
             //pushing to lettersGuessed array
@@ -225,7 +258,11 @@
             {
                 guessedCorrectly.push(letterTyped);  
                 console.log(guessedCorrectly);
-                
+                var index = randomMovie.indexOf(letterTyped);
+
+                underscores.splice(index,1,letterTyped);
+                console.log("This is "+ underscores);
+
                 //check if guessCorrectly  = randomMovie
                 if (guessedCorrectly.length == randomMovie.length)
                 {
@@ -233,14 +270,14 @@
                 loadNewMovie();
                 wins ++;
 
-            }
+                }
 
             }
             else 
             {
                 guessesRemaining--
                 guessedIncorrectly.push(letterTyped);
-                console.log(guessesRemaining)
+                // console.log(guessesRemaining)
             }
 
 
@@ -248,26 +285,12 @@
             {
                 alert("YOU LOSE!  The Movie was " + randomMovie);
                 guessesRemaining =9;
-                // emptyArrays();
                 loadNewMovie();
 
             }
 
-            for (var i = 0; i < randomMovie.length; i++)
-            {
-                underscores[i] = " _ ";
-                
-                var remainingLetters = randomMovie.length;
-                
-                // if (guessedCorrectly < randomMovie) 
-                // {
-                    
-                // }
-                             
-            }
+           
 
-
-         
             
 
 
